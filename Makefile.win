@@ -4,8 +4,8 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = Player.o Compass.o main.o Enemy.o
-LINKOBJ  = Player.o Compass.o main.o Enemy.o
+OBJ      = Player.o Compass.o main.o Enemy.o Sword.o
+LINKOBJ  = Player.o Compass.o main.o Enemy.o Sword.o
 LIBS     = -L"C:/Dev-Cpp/MinGW32/lib" -static-libstdc++ -static-libgcc -lopengl32 -lglu32 -lglut32
 INCS     = -I"C:/Dev-Cpp/MinGW32/include"
 CXXINCS  = -I"C:/Dev-Cpp/MinGW32/include"
@@ -36,3 +36,6 @@ main.o: main.cpp
 
 Enemy.o: Enemy.cpp
 	$(CPP) -c Enemy.cpp -o Enemy.o $(CXXFLAGS)
+
+Sword.o: Sword.cpp
+	$(CPP) -c Sword.cpp -o Sword.o $(CXXFLAGS)

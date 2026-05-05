@@ -25,6 +25,9 @@ Player::Player() {
     isMoving = false;
 
 }
+bool Player::isAlive() {
+    return hp > 0;
+}
 void Player::takeDamage() {
     if (hp > 0) hp--;
 }
@@ -94,6 +97,7 @@ void Player::draw() {
     glPushMatrix();
 
     // ===== V? PLAYER HÌNH TRÒN + 2 M?T =====
+    if (hp <= 0) return;
 	glPushMatrix();
 
 	glTranslatef(x, y, 0);
@@ -132,14 +136,17 @@ void Player::draw() {
 
 
     // ===== V? TAM GIÁC (XOAY THEO CHU?T) =====
-    float x1 = x + size * 1.5f;
+	float offset = size * 2;   // ?? d?y ra xa hon
+	float scale = 0.5f;           // ?? nh? l?i
+	
+	float x1 = x + offset;
 	float y1 = y;
 	
-	float x2 = x + size * 0.7f;
-	float y2 = y + size * 0.5f;
+	float x2 = x + offset - size * scale;
+	float y2 = y + size * scale * 0.6f;
 	
-	float x3 = x + size * 0.7f;
-	float y3 = y - size * 0.5f;
+	float x3 = x + offset - size * scale;
+	float y3 = y - size * scale * 0.6f;
 	
 	float rx1, ry1, rx2, ry2, rx3, ry3;
 	

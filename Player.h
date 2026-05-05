@@ -11,6 +11,7 @@ private:
     float speed;
     bool isMoving;
     int hp;
+    
 public:
     Player();
 
@@ -23,6 +24,7 @@ public:
     float getX();
     float getY();
     float getAngle();
+    bool isAlive();
 };
 
 #endif

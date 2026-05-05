@@ -4,14 +4,18 @@
 #include "Enemy.h"
 #include <ctime>
 #include <cmath>
+#include <cstdio>
+#include "Sword.h"
+
 #define PI 3.14159265
 int windowWidth = 900;
 int windowHeight = 600;
 
 Player player;
 Compass compass;
-
-Enemy enemies[5];
+Sword sword;
+Enemy enemies[10];
+int score = 0;
 
 float cameraX = 0.0f;
 float cameraY = 0.0f;
@@ -53,6 +57,24 @@ void drawHealth(Player &player) {
         glEnd();
     }
 }
+void drawText(float x, float y, const char* text) {
+    glRasterPos2f(x, y);
+    for (int i = 0; text[i] != '\0'; i++) {
+        glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+    }
+}
+
+void drawScore() {
+    char text[50];
+    sprintf(text, "Score: %d", score);
+
+    glColor3f(0, 0, 0);
+    drawText(0.55f, 0.72f, text);
+}
+void drawGameOver() {
+    glColor3f(1, 0, 0);
+    drawText(-0.1f, 0.0f, "GAME OVER");
+}
 void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
@@ -62,19 +84,35 @@ void display() {
     glTranslatef(-cameraX, -cameraY, 0);
 
     drawMap();
-    for (int i = 0; i < 5; i++) {
-    	enemies[i].draw();
-	}
-    player.draw();
 
+    for (int i = 0; i < 10; i++) {
+        enemies[i].draw();
+    }
+
+    if (player.isAlive()) {
+        player.draw();
+        sword.draw(player.getX(), player.getY(), player.getAngle());
+    }
+
+    // UI c? d?nh màn hình
     glLoadIdentity();
+
     drawHealth(player);
-    compass.draw(player.getAngle(), player.getX(), player.getY(), enemies, 5);
+    drawScore();
+    compass.draw(player.getAngle(), player.getX(), player.getY(), enemies, 10);
+
+    if (!player.isAlive()) {
+        drawGameOver();
+    }
 
     glFlush();
 }
 
-
+void keyboard(unsigned char key, int x, int y) {
+    if (key == ' ') {
+        sword.startAttack();
+    }
+}
 
 void mouseMove(int mouseX, int mouseY) {
     float worldX = cameraX + ((float)mouseX / windowWidth * 2.0f - 1.0f);
@@ -116,14 +154,18 @@ void init() {
     glMatrixMode(GL_MODELVIEW);
 }
 void update(int value) {
-    player.update();
-    
-    for (int i = 0; i < 5; i++) {
-        enemies[i].update(player.getX(), player.getY(), player);
+    if (player.isAlive()) {
+        player.update();
+
+        for (int i = 0; i < 10; i++) {
+            enemies[i].update(player.getX(), player.getY(), player);
+        }
+
+        score += sword.update(player.getX(), player.getY(), player.getAngle(), enemies, 10);
+
+        cameraX = player.getX();
+        cameraY = player.getY();
     }
-    
-    cameraX = player.getX();
-    cameraY = player.getY();
 
     glutPostRedisplay();
     glutTimerFunc(16, update, 0);
@@ -137,6 +179,7 @@ int main(int argc, char** argv) {
     init();
 
     glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
     glutPassiveMotionFunc(mouseMove);
     glutMotionFunc(mouseMove);
     glutReshapeFunc(reshape);
