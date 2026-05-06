@@ -11,6 +11,7 @@ package com.mycompany.gametkdh;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class GameTKDH extends JPanel implements ActionListener, MouseMotionListener, MouseListener, KeyListener {
     int windowWidth = 900;
@@ -21,7 +22,10 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
     Sword sword = new Sword();
 
     Enemy[] enemies = new Enemy[10];
-
+    
+    ArrayList<Boss> bosses = new ArrayList<>();
+    ArrayList<Shuriken> shurikens = new ArrayList<>();
+    
     int score = 0;
 
     double cameraX = 0;
@@ -65,6 +69,14 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
 
         for (Enemy e : enemies) {
             e.draw(world);
+        }
+        
+        // VẼ BOSS VÀ PHI TIÊU
+        for (Boss b : bosses) {
+            b.draw(world);
+        }
+        for (Shuriken s : shurikens) {
+            s.draw(world);
         }
 
         if (player.isAlive()) {
@@ -156,7 +168,30 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
                 enemy.update(player);
             }
 
-            score += sword.update(player, enemies);
+            // sửa tính score
+            int previousScore = score;
+            score += sword.update(player, enemies, bosses);
+
+            // sinh boss
+            if (score / 5 > previousScore / 5) {
+                int numberOfNewBosses = (score / 5) - (previousScore / 5);
+                for (int i = 0; i < numberOfNewBosses; i++) {
+                    bosses.add(new Boss());
+                }
+            }
+            // Cập nhật Boss
+            for (Boss b : bosses) {
+                b.update(player, shurikens);
+            }
+
+            // Cập nhật Phi tiêu 
+            for (int i = shurikens.size() - 1; i >= 0; i--) {
+                Shuriken s = shurikens.get(i);
+                s.update(player);
+                if (!s.active) {
+                    shurikens.remove(i);
+                }
+            }
 
             cameraX = player.x;
             cameraY = player.y;

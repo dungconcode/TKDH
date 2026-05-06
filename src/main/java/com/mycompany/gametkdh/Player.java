@@ -23,7 +23,8 @@ public class Player {
     boolean isMoving = false;
 
     int hp = 5;
-
+    int invincibleTimer = 0; //bất tử
+    
     public void updateAngle(double mouseX, double mouseY) {
         aimAngle = MathUtils.angleTo(x, y, mouseX, mouseY);
     }
@@ -36,6 +37,8 @@ public class Player {
     }
 
     public void update() {
+        if (invincibleTimer > 0) invincibleTimer--;
+        
         if (!isMoving || hp <= 0) return;
 
         double dx = targetX - x;
@@ -54,6 +57,7 @@ public class Player {
     }
 
     public void takeDamage() {
+        if (invincibleTimer > 0) return;
         if (hp > 0) hp--;
     }
 
@@ -64,6 +68,18 @@ public class Player {
     public void draw(Graphics2D g) {
         if (!isAlive()) return;
 
+        
+        // Vẽ vòng sáng bảo vệ nếu đang bất tử
+        if (invincibleTimer > 0) {
+            g.setColor(Color.YELLOW);
+            g.drawOval(
+                (int)((x - size * 1.5) * 1000),
+                (int)((y - size * 1.5) * 1000),
+                (int)(size * 3 * 1000),
+                (int)(size * 3 * 1000)
+            );
+        }
+        
         Graphics2D g2 = (Graphics2D) g.create();
 
         // sửa chỗ này

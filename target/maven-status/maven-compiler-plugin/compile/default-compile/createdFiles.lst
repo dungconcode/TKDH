@@ -1,5 +1,7 @@
+com\mycompany\gametkdh\Boss.class
 com\mycompany\gametkdh\Compass.class
 com\mycompany\gametkdh\MathUtils.class
+com\mycompany\gametkdh\Shuriken.class
 com\mycompany\gametkdh\Player.class
 com\mycompany\gametkdh\GameTKDH.class
 com\mycompany\gametkdh\Sword.class
