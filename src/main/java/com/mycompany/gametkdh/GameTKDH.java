@@ -15,13 +15,14 @@ import java.awt.event.*;
 public class GameTKDH extends JPanel implements ActionListener, MouseMotionListener, MouseListener, KeyListener {
     int windowWidth = 900;
     int windowHeight = 600;
-
+    CoinAnimation coinAnimation = new CoinAnimation();
     Player player = new Player();
     Compass compass = new Compass();
     Sword sword = new Sword();
 
     Enemy[] enemies = new Enemy[10];
 
+    PauseGame pauseGame = new PauseGame();
     int score = 0;
 
     double cameraX = 0;
@@ -42,9 +43,11 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
         addMouseListener(this);
         addKeyListener(this);
 
+        //timer.start();
+    }
+    public void startGame() {
         timer.start();
     }
-
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -72,6 +75,7 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
             sword.draw(world, player);
         }
 
+        
         world.dispose();
 
 
@@ -87,6 +91,7 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
         // KHÔNG có camera ở đây
         drawHealth(ui);
         drawScore(ui);
+        pauseGame.draw((Graphics2D) g, getWidth(), getHeight());
         compass.draw(ui, player, enemies);
 
         if (!player.isAlive()) {
@@ -129,9 +134,15 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
         Graphics2D g2 = (Graphics2D) g.create();
 
         g2.scale(1, -1);
+
+        int coinX = (int)(0.48 * 1000);
+        int coinY = (int)(-0.72 * 1000);
+
+        coinAnimation.draw(g2, coinX, coinY - 45, 60, 60);
+
         g2.setColor(Color.BLACK);
-        g2.setFont(new Font("Arial", Font.BOLD, 24));
-        g2.drawString("Score: " + score, (int)(0.55 * 1000), (int)(-0.72 * 1000));
+        g2.setFont(new Font("Arial", Font.BOLD, 50));
+        g2.drawString("Coins: " + score, coinX + 80, coinY);
 
         g2.dispose();
     }
@@ -149,13 +160,14 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (player.isAlive()) {
+        if (!pauseGame.isPaused() && player.isAlive()) {
             player.update();
 
             for (Enemy enemy : enemies) {
                 enemy.update(player);
             }
 
+            coinAnimation.update();
             score += sword.update(player, enemies);
 
             cameraX = player.x;
@@ -185,9 +197,14 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (pauseGame.handleMousePressed(e.getPoint())) {
+            repaint();
+            return;
+        }
         if (player.isAlive() && e.getButton() == MouseEvent.BUTTON1) {
             player.setTarget(screenToWorldX(e.getX()), screenToWorldY(e.getY()));
         }
+        
     }
 
     @Override
@@ -205,15 +222,15 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
     @Override public void keyTyped(KeyEvent e) {}
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Game TKDH - Player, Enemy, Sword, Compass");
-        GameTKDH game = new GameTKDH();
+        JFrame frame = new JFrame("Game TKDH");
 
-        frame.add(game);
+        GameMenu menu = new GameMenu(frame);
+
+        frame.setContentPane(menu);
         frame.pack();
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-
-        game.requestFocusInWindow();
     }
 }

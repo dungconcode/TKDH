@@ -1,8 +1,10 @@
+com\mycompany\gametkdh\PauseGame.class
 com\mycompany\gametkdh\Compass.class
 com\mycompany\gametkdh\MathUtils.class
 com\mycompany\gametkdh\Player.class
+com\mycompany\gametkdh\GameMenu.class
+com\mycompany\gametkdh\CoinAnimation.class
 com\mycompany\gametkdh\GameTKDH.class
 com\mycompany\gametkdh\Sword.class
 com\mycompany\gametkdh\Enemy.class
 com\mycompany\gametkdh\Image.class
-com\mycompany\gametkdh\ImageLoader.class
