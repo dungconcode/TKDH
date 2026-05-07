@@ -69,7 +69,7 @@ public class Player {
         if (!isAlive()) return;
 
         
-        // Vẽ vòng sáng bảo vệ nếu đang bất tử
+        // Vẽ vòng bất tử
         if (invincibleTimer > 0) {
             g.setColor(Color.YELLOW);
             g.drawOval(
