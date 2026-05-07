@@ -178,7 +178,7 @@ public class GameMenu extends JPanel implements MouseListener {
         // bấm Play
         if (playRect.contains(e.getPoint())) {
 
-            GameTKDH game = new GameTKDH();
+            GameTKDH game = new GameTKDH(frame);
 
             frame.setContentPane(game);
             frame.revalidate();

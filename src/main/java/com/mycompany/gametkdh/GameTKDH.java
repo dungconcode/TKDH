@@ -11,10 +11,12 @@ package com.mycompany.gametkdh;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 public class GameTKDH extends JPanel implements ActionListener, MouseMotionListener, MouseListener, KeyListener {
     int windowWidth = 900;
     int windowHeight = 600;
+    BufferedImage healthImage = Image.loadImage("/Health.png");
     CoinAnimation coinAnimation = new CoinAnimation();
     Player player = new Player();
     Compass compass = new Compass();
@@ -30,9 +32,12 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
 
     Timer timer = new Timer(16, this);
 
-    public GameTKDH() {
+    GameOverScreen gameOverScreen = new GameOverScreen();
+    JFrame frame;
+    public GameTKDH(JFrame frame) {
+        this.frame = frame;
         setPreferredSize(new Dimension(windowWidth, windowHeight));
-        setBackground(Color.WHITE);
+        setBackground(new Color(220,220,220));
         setFocusable(true);
 
         for (int i = 0; i < enemies.length; i++) {
@@ -95,7 +100,7 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
         compass.draw(ui, player, enemies);
 
         if (!player.isAlive()) {
-            drawGameOver(ui);
+            gameOverScreen.draw((Graphics2D) g, getWidth(), getHeight(), score);
         }
 
         ui.dispose();
@@ -111,21 +116,24 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
     }
 
     void drawHealth(Graphics2D g) {
-        double startX = 0.48;
-        double startY = 0.85;
-        double r = 0.035;
 
-        g.setColor(Color.RED);
+        int heartW = 80;
+        int heartH = 80;
+
+        int startX = 480;
+        int startY = 820;
 
         for (int i = 0; i < player.hp; i++) {
-            double cx = startX + i * 0.1;
-            double cy = startY;
 
-            g.fillOval(
-                    (int)((cx - r) * 1000),
-                    (int)((cy - r) * 1000),
-                    (int)(r * 2 * 1000),
-                    (int)(r * 2 * 1000)
+            int x = startX + i * 85;
+
+            g.drawImage(
+                    healthImage,
+                    x,
+                    startY,
+                    heartW,
+                    heartH,
+                    null
             );
         }
     }
@@ -158,6 +166,25 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
         g2.dispose();
     }
 
+    void restartGame() {
+        player = new Player();
+        sword = new Sword();
+        compass = new Compass();
+        pauseGame = new PauseGame();
+        gameOverScreen = new GameOverScreen();
+
+        score = 0;
+        cameraX = 0;
+        cameraY = 0;
+
+        for (int i = 0; i < enemies.length; i++) {
+            enemies[i] = new Enemy();
+        }
+
+        timer.start();
+        requestFocusInWindow();
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         if (!pauseGame.isPaused() && player.isAlive()) {
@@ -187,7 +214,12 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        player.updateAngle(screenToWorldX(e.getX()), screenToWorldY(e.getY()));
+        pauseGame.handleMouseMoved(e.getPoint());
+        repaint();
+
+        if (!pauseGame.isPaused()) {
+            player.updateAngle(screenToWorldX(e.getX()), screenToWorldY(e.getY()));
+        }
     }
 
     @Override
@@ -197,6 +229,27 @@ public class GameTKDH extends JPanel implements ActionListener, MouseMotionListe
 
     @Override
     public void mousePressed(MouseEvent e) {
+        if (!player.isAlive()) {
+            if (gameOverScreen.clickRestart(e.getPoint())) {
+                restartGame();
+                repaint();
+                return;
+            }
+
+            if (gameOverScreen.clickHome(e.getPoint())) {
+                timer.stop();
+
+                GameMenu menu = new GameMenu(frame);
+
+                frame.setContentPane(menu);
+                frame.revalidate();
+                frame.repaint();
+
+                return;
+            }
+
+            return;
+        }
         if (pauseGame.handleMousePressed(e.getPoint())) {
             repaint();
             return;
