@@ -1,11 +1,14 @@
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\GameTKDH.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\Enemy.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\CoinAnimation.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\GameOverScreen.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\MathUtils.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\GameMenu.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\Image.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\Player.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\PauseGame.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\Compass.java
-D:\school\Java\GameTKDH\src\main\java\com\mycompany\gametkdh\Sword.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Boss.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/CoinAnimation.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Compass.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Enemy.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/GameMenu.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/GameOverScreen.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/GameTKDH.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Image.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/MathUtils.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Obstacle.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/PauseGame.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Player.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Shuriken.java
+/Users/macairm1/Desktop/code ptit/th-kithuatdohoa/BTL/TKDH/src/main/java/com/mycompany/gametkdh/Sword.java
